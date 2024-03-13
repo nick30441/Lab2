@@ -19,7 +19,7 @@ module stimulus;
    integer 	 i;  
    integer       j;
 
-   DES dut (key, plaintext, encrypt, ciphertext); 
+   DES dut (key, plaintext, encrypt, ciphertext);
 
    // 1 ns clock
     initial 
@@ -51,14 +51,13 @@ module stimulus;
 	        begin
 	          errors = errors + 1;
 	        end
-        $fdisplay(desc3, "%h %h %h || %h || %h %h", 
+        $fdisplay(desc3, "%b %b %b || %b || %b %b", 
 		    plaintext, key, encrypt, ciphertext, result, (result == ciphertext));
         vectornum = vectornum + 1;
           if (testvectors[vectornum] === 200'bx) 
             begin 
 	            $display("%d tests completed with %d errors", 
 		          vectornum, errors);
-	            $finish;
 	          end
       end
 

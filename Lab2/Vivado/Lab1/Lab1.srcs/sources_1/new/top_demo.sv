@@ -27,6 +27,7 @@ module top_demo
   input  logic [3:0] btn,
   input  logic       sysclk_125mhz,
   input  logic       rst,
+
   // output  
   output logic [7:0] led,
   output logic sseg_ca,
@@ -40,20 +41,56 @@ module top_demo
   output logic [3:0] sseg_an
 );
 
-  logic [16:0] CURRENT_COUNT;
-  logic [16:0] NEXT_COUNT;
-  logic        smol_clk;
+  logic [16:0]  CURRENT_COUNT;
+  logic [16:0]  NEXT_COUNT;
+  logic         smol_clk;
+  logic [63:0]  key;
+  logic [63:0]  plaintext;
+  logic         encrypt;
+  logic [63:0]  ciphertext ;
+  logic [15:0]  dispOut;
   
-  // Place TicTacToe instantiation here
+  assign key = 64'h133457799bbcdff1;
+  assign plaintext = 64'hf77bcd7dfe57e119;
+  assign IV =  64'h122456688bbcdee1;
+  assign encrypt = sw[7];
+
+  //Das Parity Bits, ya
+  assign led[0] = key[7]^key[15]^key[23]^key[31]^key[39]^key[47]^key[55]^key[63]; //a-boum
+  
+  always_comb
+     begin
+    case(sw[3:0])
+        4'b0000     :  dispOut = plaintext[63:48];//last 16 of plaintext
+        4'b0001     :  dispOut = plaintext[47:32];
+        4'b0010     :  dispOut = plaintext[31:16];
+        4'b0011     :  dispOut = plaintext[15:0];//first 16 of plaintext
+         
+        4'b0100     :  dispOut = key[63:48];//last 16 of key
+        4'b0101     :  dispOut = key[47:32];
+        4'b0110     :  dispOut = key[31:16];
+        4'b0111     :  dispOut = key[15:0] ;//first 16 of key
+        
+        4'b1000     :  dispOut = ciphertext[63:48];//last 16 of ciphertext
+        4'b1001     :  dispOut = ciphertext[47:32];
+        4'b1010     :  dispOut = ciphertext[31:16];
+        4'b1011     :  dispOut = ciphertext[15:0] ;// first 16 of ciphertext
+        
+        default     :  dispOut = 64'h0;
+    endcase
+   end
+  
+  // Place DES instantiation here
+   DES dut (key, plaintext, encrypt, ciphertext);
   
   // 7-segment display
   segment_driver driver(
   .clk(smol_clk),
   .rst(btn[3]),
-  .digit0(sw[3:0]),
-  .digit1(4'b0111),
-  .digit2(sw[7:4]),
-  .digit3(4'b1111),
+  .digit0(dispOut[3:0]),
+  .digit1(dispOut[7:4]),
+  .digit2(dispOut[11:8]),
+  .digit3(dispOut[15:12]),
   .decimals({1'b0, btn[2:0]}),
   .segment_cathodes({sseg_dp, sseg_cg, sseg_cf, sseg_ce, sseg_cd, sseg_cc, sseg_cb, sseg_ca}),
   .digit_anodes(sseg_an)

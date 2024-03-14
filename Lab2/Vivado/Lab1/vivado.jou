@@ -1,0 +1,15 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Wed Mar 13 18:25:08 2024
+# Process ID: 29864
+# Current directory: C:/Users/nicnova/Lab2/Lab2/Vivado/Lab1
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent8928 C:\Users\nicnova\Lab2\Lab2\Vivado\Lab1\Lab1.xpr
+# Log file: C:/Users/nicnova/Lab2/Lab2/Vivado/Lab1/vivado.log
+# Journal file: C:/Users/nicnova/Lab2/Lab2/Vivado/Lab1\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/nicnova/Lab2/Lab2/Vivado/Lab1/Lab1.xpr
+update_compile_order -fileset sources_1
+save_project_as project_2 C:/Users/nicnova/Lab2/Lab2/Vivado/project_2 -force
